@@ -5,6 +5,15 @@ export default class Reaction extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public user_id: number;
+
+  @column()
+  public post_id: number;
+
+  @column()
+  public reaction: string;
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
