@@ -17,19 +17,14 @@
     ],
     "plugins": [
       "prettier"
-    ],
-    "rules": {
-      "prettier/prettier": [
-        "error"
-      ]
-    }
+    ]
   },
   "eslintIgnore": [
     "build"
   ],
   "prettier": {
     "trailingComma": "es5",
-    "semi": false,
+    "semi": true,
     "singleQuote": true,
     "useTabs": false,
     "quoteProps": "consistent",
