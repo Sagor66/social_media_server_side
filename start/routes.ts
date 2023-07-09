@@ -24,13 +24,14 @@ Route.resource('users', 'UsersController').apiOnly();
 Route.resource('userProfiles', 'UserProfilesController').apiOnly();
 Route.resource('posts', 'PostsController').apiOnly();
 Route.resource('reactions', 'ReactionsController').apiOnly();
+Route.post('login', 'LoginController.loggedUser');
 
-Route.post('login', async ({ auth, request }) => {
-  const email = request.input('email');
-  const password = request.input('password');
+// Route.post('login', async ({ auth, request }) => {
+//   const email = request.input('email');
+//   const password = request.input('password');
 
-  await auth.use('web').attempt(email, password);
-});
+//   await auth.use('web').attempt(email, password);
+// });
 
 // Route.get('/', async () => {
 //   return { hello: 'world' }
