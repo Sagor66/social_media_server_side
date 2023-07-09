@@ -10,6 +10,15 @@ export default class UsersController {
     return response.ok(users);
   }
 
+  // public async index( ctx:HttpContextContract ) {
+  //   // const users = await User.all();
+  //   const users = ctx.auth.use('web').authenticate()
+  //   console.log({ ctx: ctx.session })
+
+  //   // return response.ok(users);
+  //   return users
+  // }
+
   public async store({ request, response }) {
     const userSchema = schema.create({
       name: schema.string({ trim: true }, [rules.maxLength(255)]),

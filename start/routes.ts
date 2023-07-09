@@ -20,10 +20,28 @@
 
 import Route from '@ioc:Adonis/Core/Route';
 
+Route.get('/', () => {
+  return 'running';
+});
 Route.resource('users', 'UsersController').apiOnly();
 Route.resource('userProfiles', 'UserProfilesController').apiOnly();
 Route.resource('posts', 'PostsController').apiOnly();
 Route.resource('reactions', 'ReactionsController').apiOnly();
+
+// Route.post('login', async ({ auth, request, response }) => {
+//   const email = request.input('email');
+//   const password = request.input('password');
+//   console.log('from login');
+//   try {
+//      return await auth.use('web').attempt(email, password);
+
+//     response.redirect('/');
+//   } catch (error) {
+//     console.log(error);
+//     return response.badRequest('Invalid credentials');
+//   }
+// });
+
 Route.post('login', 'LoginController.loggedUser');
 
 // Route.post('login', async ({ auth, request }) => {
