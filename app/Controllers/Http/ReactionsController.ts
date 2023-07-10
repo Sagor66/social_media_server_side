@@ -11,15 +11,40 @@ export default class ReactionsController {
 
   public async store({ request, response }) {
     const reactionSchema = schema.create({
-        user_id: schema.number(),
-        post_id: schema.number(),
-        reaction: schema.string({ trim: true }, [rules.maxLength(255)])
-    })
+      user_id: schema.number(),
+      post_id: schema.number(),
+      reaction: schema.string({ trim: true }, [rules.maxLength(255)]),
+    });
 
-    const payload: any = await request.validate({ schema: reactionSchema })
-    const reaction: Reaction = await Reaction.create(payload)
+    const payload: any = await request.validate({ schema: reactionSchema });
+    let { user_id, post_id, reaction } = payload;
+    // const reaction: Reaction = await Reaction.create(payload)
 
-    return response.ok(reaction)
+    let existingReaction: Reaction | null = await Reaction.query()
+      .where('user_id', user_id)
+      .where('post_id', post_id)
+      .first();
+
+    if (existingReaction) {
+      existingReaction.reaction === 'like'
+        ? (existingReaction.reaction = 'dislike')
+        : (existingReaction.reaction = 'like');
+
+      console.log(existingReaction);
+
+      await existingReaction.save();
+
+      return response.ok(existingReaction);
+    }
+    // } else {
+    //   reaction = await Reaction.create(payload)
+    // }
+
+    const newReaction: Reaction = await Reaction.create(payload);
+    
+    return response.ok(newReaction);
+
+    // return response.ok(reaction);
   }
 
   public async show({ params, response }) {

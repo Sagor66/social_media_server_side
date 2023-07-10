@@ -5,7 +5,9 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator';
 
 export default class PostsController {
   public async index({ response }) {
-    const posts = await Post.all();
+    const posts: any = await Post.query().preload('comments').withCount('comments', query => {
+      query.count("*").as("number_of_comments")
+    })
     return response.ok(posts);
   }
 
@@ -24,7 +26,10 @@ export default class PostsController {
   public async show({ params, response }) {
     const { id }: { id: Number } = params;
 
-    const posts: any = await Post.find(id);
+    const posts: any = await Post.query().where('id', id).preload('comments').withCount('comments', query => {
+      query.count("*").as("number_of_comments")
+    })
+    // const posts: any = await Post.find(id);
     // const posts: any = await Post.query().where('id', id).preload('user');
     if (!posts) {
       return response.notFound({ message: 'Post not found' });
@@ -40,6 +45,8 @@ export default class PostsController {
     });
 
     const payload: any = await request.validate({ schema: postSchema });
+
+    console.log({ userId: payload.user_id, description: payload.description })
 
     const { id }: { id: Number } = params;
 

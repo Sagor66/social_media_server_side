@@ -43,7 +43,10 @@ export default class UsersController {
     //     query.count('*').as('number_of_posts');
     //   });
 
-    const user: any = await User.find(id)
+    // const user: any = await User.find(id)
+    const user: any = await User.query().where('id', id).preload('userProfiles').preload('post').withCount('post', query => {
+      query.count("*").as("number_of_posts")
+    })
     if (!user) {
       return response.notFound({ message: 'User not found' });
     }
