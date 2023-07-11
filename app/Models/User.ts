@@ -5,6 +5,7 @@ import { BaseModel, HasMany, HasOne, beforeSave, column, hasMany } from '@ioc:Ad
 import Post from './Post'
 import { hasOne } from '@ioc:Adonis/Lucid/Orm'
 import UserProfile from './UserProfile'
+import Reaction from './Reaction'
 
 
 export default class User extends BaseModel {
@@ -36,15 +37,21 @@ export default class User extends BaseModel {
   //   }
   // }
 
-  @hasMany(() => Post, {
-    foreignKey: "user_id"
-  })
-  public post: HasMany<typeof Post>
-
   @hasOne(() => UserProfile, {
     foreignKey: "user_id"
   })
   public userProfiles: HasOne<typeof UserProfile>
+
+  @hasMany(() => Post, {
+    foreignKey: "user_id"
+  })
+  public post: HasMany<typeof Post>
+  
+  @hasMany(() => Reaction, {
+    foreignKey: "user_id"
+  })
+  public reactions: HasMany<typeof Reaction>
+  
 
   public serializeExtras() {
     return {

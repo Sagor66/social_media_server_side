@@ -1,6 +1,6 @@
 // import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-import User from "App/Models/User";
+import User from 'App/Models/User';
 import { schema, rules } from '@ioc:Adonis/Core/Validator';
 
 export default class UsersController {
@@ -35,27 +35,20 @@ export default class UsersController {
   public async show({ params, response }) {
     const { id }: { id: Number } = params;
 
-    // const user: any = await User.query()
-    //   .where('id', id)
-    //   .preload('userProfile')
-    //   .preload('post')
-    //   .withCount('post', (query) => {
-    //     query.count('*').as('number_of_posts');
-    //   });
-
-    // const user: any = await User.find(id)
-    const user: any = await User.query().where('id', id).preload('userProfiles').preload('post').withCount('post', query => {
-      query.count("*").as("number_of_posts")
-    })
+    const user: any = await User.query()
+      .where('id', id)
+      .preload('userProfiles')
+      .preload('post')
+      .preload('reactions')
+      .withCount('post', (query) => {
+        query.count('*').as('number_of_posts');
+      })
+      .withCount('reactions', (query) => {
+        query.count('*').as('number_of_reactions');
+      });
     if (!user) {
       return response.notFound({ message: 'User not found' });
     }
-
-    // const postCount = user.post_count;
-
-    // console.log(postCount)
-
-    // const userWithPostCount = { ...user, postCount }
 
     return response.ok(user);
   }

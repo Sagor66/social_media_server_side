@@ -28,6 +28,7 @@ Route.resource('userProfiles', 'UserProfilesController').apiOnly();
 Route.resource('posts', 'PostsController').apiOnly();
 Route.resource('reactions', 'ReactionsController').apiOnly();
 Route.resource('comments', 'CommentsController').apiOnly();
+Route.resource('comment_reactions', 'CommentReactionsController').apiOnly();
 
 // Route.post('login', async ({ auth, request, response }) => {
 //   const email = request.input('email');

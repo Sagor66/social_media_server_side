@@ -4,9 +4,15 @@ import Post from 'App/Models/Post';
 import { schema, rules } from '@ioc:Adonis/Core/Validator';
 
 export default class PostsController {
-  public async index({ response }) {
-    const posts: any = await Post.query().preload('comments').withCount('comments', query => {
+  public async index({ request, response }) {
+    let user_id = request.all().user_id
+    // let serchValue = request.all().searchValue
+    const posts: any = await Post.query().preload('comments').preload('reactions').withCount('comments', query => {
       query.count("*").as("number_of_comments")
+    }).withCount('reactions', query => {
+      query.count("*").as("number_of_reactions")
+    }).withCount('reactions', query => {
+      query.where("user_id", user_id).as("like")
     })
     return response.ok(posts);
   }
@@ -26,8 +32,10 @@ export default class PostsController {
   public async show({ params, response }) {
     const { id }: { id: Number } = params;
 
-    const posts: any = await Post.query().where('id', id).preload('comments').withCount('comments', query => {
+    const posts: any = await Post.query().where('id', id).preload('comments').preload('reactions').withCount('comments', query => {
       query.count("*").as("number_of_comments")
+    }).withCount('reactions', query => {
+      query.count("*").as("number_of_reactions")
     })
     // const posts: any = await Post.find(id);
     // const posts: any = await Post.query().where('id', id).preload('user');

@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, HasMany, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Comment from './Comment';
+import Reaction from './Reaction';
 
 export default class Post extends BaseModel {
   @column({ isPrimary: true })
@@ -23,9 +24,18 @@ export default class Post extends BaseModel {
   })
   public comments: HasMany<typeof Comment>
 
+  @hasMany(() => Reaction, {
+    foreignKey: "post_id"
+  })
+  public reactions: HasMany<typeof Reaction>
+
+  // public total_likes: HasMany<typeof Reaction>
+
   public serializeExtras() {
     return {
-      number_of_comments: this.$extras.number_of_comments
+      number_of_comments: this.$extras.number_of_comments,
+      number_of_reactions: this.$extras.number_of_reactions,
+      like: this.$extras.like
     }
   }
 }
