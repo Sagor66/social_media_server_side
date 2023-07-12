@@ -70,6 +70,6 @@ export default class CommentsController {
 
     await comments.delete();
 
-    return response.ok({ message: 'Comment deleted successfully' });
+    return response.ok(comments);
   }
 }

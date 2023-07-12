@@ -13,11 +13,12 @@ export default class CommentReactionsController {
           user_id: schema.number(),
           post_id: schema.number(),
           comment_id: schema.number(),
-          reaction: schema.string({ trim: true }, [rules.maxLength(255)]),
+          comment_reaction: schema.string({ trim: true }, [rules.maxLength(255)]),
         });
     
         const payload: any = await request.validate({ schema: reactionSchema });
-        let { user_id, post_id, comment_id, reaction } = payload;
+        let { user_id, post_id, comment_id, comment_reaction } = payload;
+
         // const reaction: Reaction = await Reaction.create(payload)
     
         let existingReaction: CommentReaction | null = await CommentReaction.query()
@@ -31,7 +32,6 @@ export default class CommentReactionsController {
             ? (existingReaction.comment_reaction = 'dislike')
             : (existingReaction.comment_reaction = 'like');
     
-          console.log(existingReaction);
     
           await existingReaction.save();
     

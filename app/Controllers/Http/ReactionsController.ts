@@ -30,7 +30,6 @@ export default class ReactionsController {
         ? (existingReaction.reaction = 'dislike')
         : (existingReaction.reaction = 'like');
 
-      console.log(existingReaction);
 
       await existingReaction.save();
 

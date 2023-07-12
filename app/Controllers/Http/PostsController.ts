@@ -12,8 +12,10 @@ export default class PostsController {
     }).withCount('reactions', query => {
       query.count("*").as("number_of_reactions")
     }).withCount('reactions', query => {
-      query.where("user_id", user_id).as("like")
+      query.where("user_id", user_id).where('reaction', 'like').as("like")
     })
+
+
     return response.ok(posts);
   }
 
@@ -50,11 +52,13 @@ export default class PostsController {
     const postSchema = schema.create({
       user_id: schema.number(),
       description: schema.string({ escape: true }, [rules.maxLength(1000)]),
+      like: schema.number.optional(),
     });
 
     const payload: any = await request.validate({ schema: postSchema });
 
-    console.log({ userId: payload.user_id, description: payload.description })
+    console.log(payload)
+
 
     const { id }: { id: Number } = params;
 
@@ -65,6 +69,10 @@ export default class PostsController {
 
     posts.user_id = payload.user_id;
     posts.description = payload.description;
+
+    if (payload.like !== undefined) {
+      posts.like = payload.like;
+    }
     
     await posts.save();
 

@@ -13,7 +13,6 @@ export default class UsersController {
   // public async index( ctx:HttpContextContract ) {
   //   // const users = await User.all();
   //   const users = ctx.auth.use('web').authenticate()
-  //   console.log({ ctx: ctx.session })
 
   //   // return response.ok(users);
   //   return users
