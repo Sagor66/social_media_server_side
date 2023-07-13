@@ -4,8 +4,15 @@ import Comment from 'App/Models/Comment';
 import { schema, rules } from '@ioc:Adonis/Core/Validator';
 
 export default class CommentsController {
-  public async index({ response }) {
-    const comments = await Comment.all();
+  public async index({ request, response }) {
+    let user_id = request.all().user_id;
+    const comments = await Comment.query().withCount('comment_reaction', query => {
+      query.where("user_id", user_id).where('comment_reaction', 'like').as("like")
+    })
+    
+
+    console.log({ comments });
+
     return response.ok(comments);
   }
 
