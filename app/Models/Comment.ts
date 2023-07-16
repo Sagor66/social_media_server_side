@@ -29,7 +29,8 @@ export default class Comment extends BaseModel {
 
   public serializeExtras() {
     return {
-      like: this.$extras.like
+      like: this.$extras.like,
+      number_of_reactions: this.$extras.number_of_reactions,
     }
   }
 

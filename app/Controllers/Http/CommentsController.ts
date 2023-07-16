@@ -8,6 +8,8 @@ export default class CommentsController {
     let user_id = request.all().user_id;
     const comments = await Comment.query().withCount('comment_reaction', query => {
       query.where("user_id", user_id).where('comment_reaction', 'like').as("like")
+    }).withCount('comment_reaction', query => {
+      query.count("*").where("comment_reaction", "like").as("number_of_reactions")
     })
     
 

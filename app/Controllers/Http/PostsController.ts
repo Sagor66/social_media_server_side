@@ -10,7 +10,7 @@ export default class PostsController {
     const posts: any = await Post.query().preload('comments').preload('reactions').withCount('comments', query => {
       query.count("*").as("number_of_comments")
     }).withCount('reactions', query => {
-      query.count("*").as("number_of_reactions")
+      query.count("*").where("reaction", "like").as("number_of_reactions")
     }).withCount('reactions', query => {
       query.where("user_id", user_id).where('reaction', 'like').as("like")
     })
